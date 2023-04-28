@@ -11,9 +11,44 @@ datasource db {
 }
 
 model User {
-  id String @id @default(uuid())
-  name String
-  email String @unique
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  password_hash String
+  created_at    DateTime @default(now())
+
+  checkIns CheckIn[] // camel case, this argument is not save in the data base, its just a relational indication
 
   @@map("users")
+}
+
+model CheckIn {
+  id           String    @id @default(uuid())
+  created_at   DateTime  @default(now())
+  validated_at DateTime?
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+
+  gym Gym @relation(fields: [gym_id], references: [id])
+  gym_id String
+
+  
+  // user_id String // FK for users table
+  // gym_id String  // FK for gyms table
+
+  @@map("check_ins")
+}
+
+model Gym {
+  id          String    @id @default(uuid())
+  title       String
+  description String?
+  phone       String?
+  latitude    Decimal
+  longitude   Decimal
+
+  checkIns     CheckIn[] // camel case, this argument is not save in the data base, its just a relational indication
+
+  @@map("gyms")
 }
