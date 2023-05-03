@@ -11,7 +11,7 @@ describe("Authenticate (e2e)", () => {
     await app.close();
   });
 
-  it("sould be able to register", async () => {
+  it("sould be able to authenticate", async () => {
     await request(app.server).post("/users").send({
       name: "Arthur e2e",
       email: "arthur@e2e.com",
