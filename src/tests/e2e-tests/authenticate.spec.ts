@@ -12,12 +12,20 @@ describe("Authenticate (e2e)", () => {
   });
 
   it("sould be able to register", async () => {
-    const response = await request(app.server).post("/users").send({
+    await request(app.server).post("/users").send({
       name: "Arthur e2e",
       email: "arthur@e2e.com",
       password: "123456",
     });
 
-    expect(response.statusCode).toEqual(201);
+    const response = await request(app.server).post("/session").send({
+      email: "arthur@e2e.com",
+      password: "123456",
+    });
+
+    expect(response.statusCode).toEqual(200);
+    expect(response.body).toEqual({
+      token: expect.any(String),
+    });
   });
 });
